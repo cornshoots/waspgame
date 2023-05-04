@@ -22,8 +22,8 @@ class WaspGame {
     constructor() {
         this.wasps = [
             new Wasp('Queen', 80, 7),
-            ...Array(5).fill.map(() => new Wasp('Worker', 68, 10)),
-            ...Array(8).fill.map(() => new Wasp('Drone', 60, 12))
+            ...Array(5).fill().map(() => new Wasp('Worker', 68, 10)),
+            ...Array(8).fill().map(() => new Wasp('Drone', 60, 12))
         ];
     }
 

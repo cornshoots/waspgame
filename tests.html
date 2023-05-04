@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasp Game Tests</title>
+</head>
+
+<body>
+    <script src="gameengine.js"></script>
+    <script>
+        //Test that the game that is created adheres to the requirements set out in the assessment
+        function testGameCreation() {
+            const game = new WaspGame();
+
+            if (game.wasps.length !== 14) {
+                console.error('Wasps count is incorrect');
+            }
+
+            //Test Queen properties
+            const queen = game.wasps.filter(wasp => wasp.type === 'Queen');
+
+            if (!queen) {
+                console.error('The Queen is missing, the hive is doomed!')
+            }
+
+            if (queen.length < 1) {
+                console.error('There are too many Queens, a battle will ensue!')
+            }
+
+            //Test Worker properties
+            const workers = game.wasps.filter(wasp => wasp.type == 'Worker');
+
+            if (workers.length !== 5) {
+                console.error('The number of worker bees is incorrect')
+            }
+
+            //Test Drone properties
+            const drones = game.wasps.filter(wasp => wasp.type === 'Drone');
+
+            if (drones.length !== 8) {
+                console.error('The number of drones is incorrect')
+            }
+
+            console.log('Game Creation Tests Passed')
+
+        }
+        testGameCreation()
+    </script>
+</body>
+
+</html>
