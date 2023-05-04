@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasp Game - Text Version</title>
+    <script src="game-engine.js"></script>
+</head>
+<body>
+    <h1>Wasp Game</h1>
+    <button onclick="hitWasp()">Hit a random wasp</button>
+    <div id="gameStatus"></div>
+    <ol id="gameContent"></ol>
+
+    <script>
+        const game = new WaspGame();
+        const gameStatus = document.getElementById('gameStatus')
+        const gameContent = document.getElementById('gameContent')
+
+        function hitWasp() {
+            game.hitWasp();
+            updateGameStatus();
+            if (game.isGameOver()){
+                gameStatus.textContent = 'All wasps killed, you win! Hit refresh to play again'
+            }
+        }
+
+        function updateGameStatus() {
+            gameContent.innerHTML = ''
+            game.wasps.forEach((wasp) => {
+                const waspItem = document.createElement('li');
+                waspItem.textContent = `${wasp.type}: ${wasp.hitPoints} HP`;
+                gameContent.appendChild(waspItem);
+            });
+        }
+
+        updateGameStatus();
+    </script>
+    
+</body>
+</html>
