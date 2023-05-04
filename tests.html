@@ -11,7 +11,7 @@
     <script src="gameengine.js"></script>
     <script>
         //Test that the game that is created adheres to the requirements set out in the assessment
-        function testGameCreation() {
+        function testWaspGame() {
             const game = new WaspGame();
 
             if (game.wasps.length !== 14) {
@@ -45,8 +45,33 @@
 
             console.log('Game Creation Tests Passed')
 
+            const initialQueenHP = queen[0].hitPoints;
+            queen[0].hit();
+
+            if (queen[0].hitPoints !== initialQueenHP - queen[0].damage) {
+                console.error('Queen wasp hit points did not decrease correctly');
+            }
+
+            const initialWorkerHP = workers[0].hitPoints;
+            workers[0].hit();
+
+            if (workers[0].hitPoints !== initialWorkerHP - workers[0].damage) {
+                console.error('Worker wasp hit points did not decrease correctly');
+            }
+
+            const initialDroneHP = drones[0].hitPoints;
+            drones[0].hit();
+
+            if (drones[0].hitPoints !== initialDroneHP - drones[0].damage) {
+                console.error('Drone wasp hit points did not decrease correctly');
+            }
+
+            console.log('Game Functionality Tests Passed')
+
         }
-        testGameCreation()
+
+        testWaspGame()
+
     </script>
 </body>
 
