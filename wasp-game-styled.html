@@ -7,23 +7,23 @@
     <title>Wasp Game - Styled Version</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe Print', Arial, sans-serif;
             text-align: center;
         }
 
         #hitWaspInfo {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
-            margin-top: 20px;
+            align-items: center;
         }
 
         .wasp {
             border: 1px solid #333;
-            padding: 10px;
-            margin: 5px;
-            width: 100px;
-            height: 150px;
+            padding: 1vh;
+            margin: 1vh;
+            width: 20vh;
+            height: 30vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -34,16 +34,37 @@
             background-color: #f00;
         }
 
-        .wasp.Queen {
-            background-color: #ffd700;
+        img {
+            width: 70%;
+            height: auto;
         }
 
-        .wasp.Worker {
-            background-color: #00f;
+        #waspList {
+            display: inline-block;
+            width: 20vh;
+            margin: 1vh;
+            font-size: 1.1em;
         }
 
-        .wasp.Drone {
-            background-color: #0f0;
+        button {
+            font-family: 'Segoe Print', Arial, sans-serif;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 2vh 4vh;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 2vh;
+            margin: 1vh 1vh;
+            cursor: pointer;
+            border-radius: 1.5vh;
+            transition-duration: 0.4s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            color: white;
         }
     </style>
 </head>
@@ -51,8 +72,13 @@
 <body>
     <h1>Wasp Game - Styled Version</h1>
     <button onclick="hitWaspAndDisplay()">Hit a random wasp</button>
+    <br>
     <div id="gameStatus"></div>
-    <div id="hitWaspInfo"></div>
+    <div id="hitWaspInfo">
+
+    </div>
+    <ol id="waspList"></ol>
+
 
     <script>
         //Basic class for a wasp, with a method for hitting that wasp that remove's the occurring damage from it's hitpoints
@@ -108,15 +134,17 @@
         const game = new WaspGame();
         const gameStatus = document.getElementById('gameStatus');
         const hitWaspInfo = document.getElementById('hitWaspInfo');
+        const waspList = document.getElementById('waspList');
 
         function hitWaspAndDisplay() {
             const hitWaspIndex = game.hitWasp();
             if (hitWaspIndex !== null) {
-        const hitWasp = game.wasps[hitWaspIndex];
-        displayHitWasp(hitWasp);
-    }
+                const hitWasp = game.wasps[hitWaspIndex];
+                displayHitWasp(hitWasp);
+                updateWaspList();
+            }
             if (game.isGameOver()) {
-                gameStatus.textContent = 'Game Over! All wasps are dead.';
+                gameStatus.textContent = 'All wasps killed, you win! Hit refresh to play again';
                 gameStatus.style.color = 'red';
             }
         }
@@ -128,9 +156,22 @@
 
             if (hitWasp.type === 'Drone') {
                 const imgElement = document.createElement('img');
-                imgElement.src = 'beedrill.svg';
-                imgElement.style.width = '50px';
-                imgElement.style.height = '50px';
+                imgElement.src = 'Drone.svg';
+                imgElement.style.width = '15vh';
+                waspElement.appendChild(imgElement);
+            }
+
+            else if (hitWasp.type === 'Worker') {
+                const imgElement = document.createElement('img');
+                imgElement.src = 'Worker.png';
+                imgElement.style.width = '15vh';
+                waspElement.appendChild(imgElement);
+            }
+
+            else if (hitWasp.type === 'Queen') {
+                const imgElement = document.createElement('img');
+                imgElement.src = 'Queen.jpg';
+                imgElement.style.width = '15vh';
                 waspElement.appendChild(imgElement);
             }
 
@@ -143,6 +184,15 @@
             }
 
             hitWaspInfo.appendChild(waspElement);
+        }
+
+        function updateWaspList() {
+            waspList.innerHTML = '';
+            game.wasps.forEach((wasp, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${index + 1}. ${wasp.type}: ${wasp.hitPoints} HP`;
+                waspList.appendChild(listItem);
+            });
         }
     </script>
 </body>
