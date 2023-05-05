@@ -13,7 +13,7 @@
 
         #hitWaspInfo {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             justify-content: center;
             align-items: center;
         }
@@ -39,23 +39,16 @@
             height: auto;
         }
 
-        #waspList {
-            display: inline-block;
-            width: 20vh;
-            margin: 1vh;
-            font-size: 1.1em;
-        }
-
         button {
             font-family: 'Segoe Print', Arial, sans-serif;
             background-color: #4CAF50;
             border: none;
             color: white;
-            padding: 2vh 4vh;
+            padding: 1vh 2vh;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 2vh;
+            font-size: 3vh;
             margin: 1vh 1vh;
             cursor: pointer;
             border-radius: 1.5vh;
@@ -134,66 +127,54 @@
         const game = new WaspGame();
         const gameStatus = document.getElementById('gameStatus');
         const hitWaspInfo = document.getElementById('hitWaspInfo');
-        const waspList = document.getElementById('waspList');
 
         function hitWaspAndDisplay() {
             const hitWaspIndex = game.hitWasp();
-            if (hitWaspIndex !== null) {
-                const hitWasp = game.wasps[hitWaspIndex];
-                displayHitWasp(hitWasp);
-                updateWaspList();
-            }
+            updateWaspsDisplay(hitWaspIndex);
+
             if (game.isGameOver()) {
                 gameStatus.textContent = 'All wasps killed, you win! Hit refresh to play again';
                 gameStatus.style.color = 'red';
             }
         }
 
-        function displayHitWasp(hitWasp) {
+        function updateWaspsDisplay(hitWaspIndex) {
             hitWaspInfo.innerHTML = '';
-            const waspElement = document.createElement('div');
-            waspElement.className = `wasp ${hitWasp.type}`;
-
-            if (hitWasp.type === 'Drone') {
-                const imgElement = document.createElement('img');
-                imgElement.src = 'Drone.svg';
-                imgElement.style.width = '15vh';
-                waspElement.appendChild(imgElement);
-            }
-
-            else if (hitWasp.type === 'Worker') {
-                const imgElement = document.createElement('img');
-                imgElement.src = 'Worker.png';
-                imgElement.style.width = '15vh';
-                waspElement.appendChild(imgElement);
-            }
-
-            else if (hitWasp.type === 'Queen') {
-                const imgElement = document.createElement('img');
-                imgElement.src = 'Queen.jpg';
-                imgElement.style.width = '15vh';
-                waspElement.appendChild(imgElement);
-            }
-
-            const hitPointsElement = document.createElement('div');
-            hitPointsElement.textContent = `${hitWasp.type}: ${hitWasp.hitPoints} HP`;
-            waspElement.appendChild(hitPointsElement);
-
-            if (hitWasp.hitPoints === 0) {
-                waspElement.classList.add('dead');
-            }
-
-            hitWaspInfo.appendChild(waspElement);
-        }
-
-        function updateWaspList() {
-            waspList.innerHTML = '';
             game.wasps.forEach((wasp, index) => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${index + 1}. ${wasp.type}: ${wasp.hitPoints} HP`;
-                waspList.appendChild(listItem);
+                const waspElement = document.createElement('div');
+                waspElement.className = `wasp ${wasp.type}`;
+
+                const imgElement = document.createElement('img');
+                if (wasp.type === 'Drone') {
+                    imgElement.src = 'Drone.svg';
+                } else if (wasp.type === 'Worker') {
+                    imgElement.src = 'Worker.png';
+                } else if (wasp.type === 'Queen') {
+                    imgElement.src = 'Queen.jpg';
+                }
+                imgElement.style.width = '15vh';
+                waspElement.appendChild(imgElement);
+
+                const hitPointsElement = document.createElement('div');
+                hitPointsElement.textContent = `${wasp.type}: ${wasp.hitPoints} HP`;
+                waspElement.appendChild(hitPointsElement);
+
+                if (wasp.hitPoints === 0) {
+                    waspElement.classList.add('dead');
+                }
+
+                if (index === hitWaspIndex) {
+                    waspElement.style.backgroundColor = 'red';
+                    setTimeout(() => {
+                        waspElement.style.backgroundColor = '';
+                    }, 500);
+                }
+
+                hitWaspInfo.appendChild(waspElement);
             });
         }
+
+        updateWaspsDisplay();
     </script>
 </body>
 
